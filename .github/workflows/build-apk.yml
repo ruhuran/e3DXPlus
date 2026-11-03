@@ -17,27 +17,20 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
       - name: Unzip project
         run: unzip -o Re3DXPlus_Simple_Project_v2.zip -d project
 
-      - name: Find Gradle project
-        run: |
-          GRADLE_FILE=$(find project -type f -name gradlew | head -n 1)
-          if [ -z "$GRADLE_FILE" ]; then
-            echo "gradlew not found"
-            find project -maxdepth 4 -type f | head -n 100
-            exit 1
-          fi
-          echo "GRADLE_DIR=$(dirname "$GRADLE_FILE")" >> $GITHUB_ENV
-
       - name: Build APK
-        run: |
-          cd "$GRADLE_DIR"
-          chmod +x gradlew
-          ./gradlew assembleDebug
+        run: gradle assembleDebug
+        working-directory: project/Re3DXPlus
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
-          path: project/**/build/outputs/apk/debug/*.apk
+          path: project/Re3DXPlus/**/build/outputs/apk/debug/*.apk
