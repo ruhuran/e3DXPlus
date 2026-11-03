@@ -20,7 +20,7 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.7'
+          gradle-version: '8.9'
 
       - name: Unzip project
         run: unzip -o Re3DXPlus_Simple_Project_v2.zip -d project
